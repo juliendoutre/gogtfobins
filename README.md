@@ -12,3 +12,12 @@ gogtfobins list --function reverse-shell
 # Print details about the docker binary.
 gogtfobins describe docker
 ```
+
+## Development
+
+### Lint the code
+
+```shell
+brew install golangci-lint
+golangci-lint run
+```
