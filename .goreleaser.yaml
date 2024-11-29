@@ -5,7 +5,9 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - main: ./cmd
+    binary: gogtfobins
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -28,3 +30,6 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+sboms:
+  - artifacts: archive

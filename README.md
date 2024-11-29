@@ -26,8 +26,8 @@ golangci-lint run
 
 ```shell
 brew install goreleaser
+goreleaser check
 git tag -a v0.1.0 -m "First release"
 git push origin v0.1.0
-goreleaser check
 GITHUB_TOKEN=$(gh auth token) goreleaser release
 ```
