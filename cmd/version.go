@@ -8,14 +8,14 @@ import (
 )
 
 // This is set at build time.
-var Version = "unknown" //nolint:gochecknoglobals
+var version = "unknown" //nolint:gochecknoglobals
 
 func versionCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print out the CLI version.",
 		Run: func(_ *cobra.Command, _ []string) {
-			fmt.Fprintln(os.Stdout, "gogtfobins version: "+Version)
+			fmt.Fprintln(os.Stdout, "gogtfobins version: "+version)
 		},
 	}
 
