@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -10,6 +11,11 @@ import (
 )
 
 func describeCmd() *cobra.Command {
+	var (
+		function string
+		format   string
+	)
+
 	cmd := &cobra.Command{
 		Use:   "describe BINARY",
 		Short: "Print out informations about a given binary.",
@@ -20,21 +26,70 @@ func describeCmd() *cobra.Command {
 				return fmt.Errorf("building gtfobins index: %w", err)
 			}
 
-			gtfobin, ok := index[args[0]]
-			if !ok {
-				return ErrUnknwonBinary
-			}
-
-			content, err := yaml.Marshal(gtfobin.Functions)
+			object, err := extractObject(index, function, args[0])
 			if err != nil {
-				return fmt.Errorf("encoding a description to yaml: %w", err)
+				return err
 			}
 
-			fmt.Fprintln(os.Stdout, string(content))
+			content, err := formatObject(object, format)
+			if err != nil {
+				return err
+			}
+
+			fmt.Fprintln(os.Stdout, content)
 
 			return nil
 		},
 	}
 
+	cmd.Flags().StringVar(
+		&function, "function", "",
+		"optional function to display information for",
+	)
+
+	cmd.Flags().StringVar(
+		&format, "format", "yaml",
+		"format of the output",
+	)
+
 	return cmd
+}
+
+func extractObject(index gogtfobins.Index, function, name string) (any, error) {
+	gtfobin, ok := index[name]
+	if !ok {
+		return nil, ErrUnknwonBinary
+	}
+
+	if function != "" {
+		fun, ok := gtfobin.Functions[function]
+		if !ok {
+			return nil, ErrUnknwonFunction
+		}
+
+		return fun, nil
+	}
+
+	return gtfobin.Functions, nil
+}
+
+func formatObject(object any, format string) (string, error) {
+	switch format {
+	case "json":
+		content, err := json.MarshalIndent(object, "", "  ")
+		if err != nil {
+			return "", fmt.Errorf("encoding output to json: %w", err)
+		}
+
+		return string(content), nil
+	case "yaml":
+		content, err := yaml.Marshal(object)
+		if err != nil {
+			return "", fmt.Errorf("encoding output to yaml: %w", err)
+		}
+
+		return string(content), nil
+	default:
+		return "", ErrUnknwonFormat
+	}
 }

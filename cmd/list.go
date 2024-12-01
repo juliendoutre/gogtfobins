@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -11,11 +12,15 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/juliendoutre/gogtfobins"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 )
 
-var function string //nolint: gochecknoglobals
-
 func listCmd() *cobra.Command {
+	var (
+		function string
+		format   string
+	)
+
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List available binaries with their possible functions.",
@@ -35,22 +40,14 @@ func listCmd() *cobra.Command {
 				return err
 			}
 
-			tableWriter := table.NewWriter()
-			tableWriter.SetStyle(table.StyleColoredBright)
-			tableWriter.AppendHeader(table.Row{"name", "path", "functions"})
+			entries := buildListEntries(index, binaries)
 
-			for binary, path := range binaries {
-				tableWriter.AppendRow(table.Row{
-					binary,
-					path,
-					strings.Join(
-						set.NewSetFromMapKeys(index[binary].Functions).ToSlice(),
-						",",
-					),
-				})
+			content, err := formatList(entries, format)
+			if err != nil {
+				return err
 			}
 
-			fmt.Fprintln(os.Stdout, tableWriter.Render())
+			fmt.Fprintln(os.Stdout, content)
 
 			return nil
 		},
@@ -59,6 +56,11 @@ func listCmd() *cobra.Command {
 	cmd.Flags().StringVar(
 		&function, "function", "",
 		"optional function to filter binaries by",
+	)
+
+	cmd.Flags().StringVar(
+		&format, "format", "table",
+		"format of the output",
 	)
 
 	return cmd
@@ -100,4 +102,59 @@ func listAvailableBinaries(candidates set.Set[string]) (map[string]string, error
 	}
 
 	return availableBinaries, nil
+}
+
+type listEntry struct {
+	Name      string   `json:"name"      yaml:"name"`
+	Path      string   `json:"path"      yaml:"path"`
+	Functions []string `json:"functions" yaml:"functions"`
+}
+
+func buildListEntries(index gogtfobins.Index, binaries map[string]string) []listEntry {
+	entries := []listEntry{}
+
+	for binary, path := range binaries {
+		entries = append(entries, listEntry{
+			Name:      binary,
+			Path:      path,
+			Functions: set.NewSetFromMapKeys(index[binary].Functions).ToSlice(),
+		})
+	}
+
+	return entries
+}
+
+func formatList(entries []listEntry, format string) (string, error) {
+	switch format {
+	case "yaml":
+		content, err := yaml.Marshal(entries)
+		if err != nil {
+			return "", fmt.Errorf("encoding output to yaml: %w", err)
+		}
+
+		return string(content), nil
+	case "json":
+		content, err := json.MarshalIndent(entries, "", "  ")
+		if err != nil {
+			return "", fmt.Errorf("encoding output to json: %w", err)
+		}
+
+		return string(content), nil
+	case "table":
+		tableWriter := table.NewWriter()
+		tableWriter.SetStyle(table.StyleColoredBright)
+		tableWriter.AppendHeader(table.Row{"name", "path", "functions"})
+
+		for _, entry := range entries {
+			tableWriter.AppendRow(table.Row{
+				entry.Name,
+				entry.Path,
+				strings.Join(entry.Functions, ","),
+			})
+		}
+
+		return tableWriter.Render(), nil
+	default:
+		return "", ErrUnknwonFormat
+	}
 }
