@@ -8,7 +8,7 @@ import (
 )
 
 // This is set at build time.
-var version = "unknown" //nolint:gochecknoglobals
+var version = "unknown"
 
 func versionCmd() *cobra.Command {
 	cmd := &cobra.Command{
