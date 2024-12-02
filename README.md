@@ -6,7 +6,12 @@ This project is a Golang CLI meant to be used as a discovery tool to evaluate wh
 
 ## Getting started
 
-Checkout out the project releases on https://github.com/juliendoutre/gogtfobins/releases!
+```shell
+brew tap juliendoutre/gogtfobins https://github.com/juliendoutre/gogtfobins
+brew install gogtfobins
+```
+
+Check out the project releases on https://github.com/juliendoutre/gogtfobins/releases!
 
 ## Usage
 
