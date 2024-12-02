@@ -58,13 +58,13 @@ func describeCmd() *cobra.Command {
 func extractObject(index gogtfobins.Index, function, name string) (any, error) {
 	gtfobin, ok := index[name]
 	if !ok {
-		return nil, ErrUnknwonBinary
+		return nil, ErrUnknownBinary
 	}
 
 	if function != "" {
 		fun, ok := gtfobin.Functions[function]
 		if !ok {
-			return nil, ErrUnknwonFunction
+			return nil, ErrUnknownFunction
 		}
 
 		return fun, nil
@@ -90,6 +90,6 @@ func formatObject(object any, format string) (string, error) {
 
 		return string(content), nil
 	default:
-		return "", ErrUnknwonFormat
+		return "", ErrUnknownFormat
 	}
 }

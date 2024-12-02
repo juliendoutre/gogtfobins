@@ -73,7 +73,7 @@ func listCandidateBinaries(function string, index gogtfobins.Index) (set.Set[str
 
 		potentialBinaries, ok := reverseIndex[function]
 		if !ok {
-			return nil, ErrUnknwonFunction
+			return nil, ErrUnknownFunction
 		}
 
 		return potentialBinaries, nil
@@ -155,6 +155,6 @@ func formatList(entries []listEntry, format string) (string, error) {
 
 		return tableWriter.Render(), nil
 	default:
-		return "", ErrUnknwonFormat
+		return "", ErrUnknownFormat
 	}
 }

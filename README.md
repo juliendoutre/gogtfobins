@@ -15,6 +15,8 @@ Checkout out the project releases on https://github.com/juliendoutre/gogtfobins/
 gogtfobins list --function reverse-shell
 # Print possible exploits for the docker binary as JSON.
 gogtfobins describe docker --format json
+# Get a reverse-shell using the docker binary.
+gogtfobins exploit docker reverse-shell
 ```
 
 ## Development

@@ -17,6 +17,7 @@ func main() {
 		versionCmd(),
 		listCmd(),
 		describeCmd(),
+		exploitCmd(),
 	)
 
 	if err := cmd.Execute(); err != nil {
