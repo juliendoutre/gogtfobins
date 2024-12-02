@@ -33,3 +33,18 @@ changelog:
 
 sboms:
   - artifacts: archive
+
+brews:
+- name: gogtfobins
+  repository:
+    owner: juliendoutre
+    name: gogtfobins
+    branch: "homebrew-update-{{ .Version	}}"
+    pull_request:
+      enabled: true
+      base:
+        owner: juliendoutre
+        name: gogtfobins
+        branch: main
+  directory: Formula
+  url_template: "https://github.com/juliendoutre/gogtfobins/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
