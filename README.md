@@ -36,10 +36,6 @@ golangci-lint run
 ### Release a new version
 
 ```shell
-brew install goreleaser syft
-goreleaser check
 git tag -a v0.1.0 -m "First release"
 git push origin v0.1.0
-rm -rf ./dist
-GITHUB_TOKEN=$(gh auth token) goreleaser release
 ```
