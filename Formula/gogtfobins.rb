@@ -5,20 +5,20 @@
 class Gogtfobins < Formula
   desc ""
   homepage ""
-  version "0.1.5"
+  version "1.9.0"
 
   on_macos do
-    on_intel do
-      url "https://github.com/juliendoutre/gogtfobins/releases/download/v0.1.5/gogtfobins_Darwin_x86_64.tar.gz"
-      sha256 "403ce53b209b20f6b80c2f6f4956dc5407e9947ccd05474b551f1e0fdd68b63b"
+    if Hardware::CPU.intel?
+      url "https://github.com/juliendoutre/gogtfobins/releases/download/v1.9.0/gogtfobins_Darwin_x86_64.tar.gz"
+      sha256 "7269633342acb0d3f31aa9899f6dc252e953215ecd981b9741ea2d0fdec1f232"
 
       def install
         bin.install "gogtfobins"
       end
     end
-    on_arm do
-      url "https://github.com/juliendoutre/gogtfobins/releases/download/v0.1.5/gogtfobins_Darwin_arm64.tar.gz"
-      sha256 "27eab2e1e27688a38e710d061ea03228c3e36570d7510b43f5e1c5683040fdb2"
+    if Hardware::CPU.arm?
+      url "https://github.com/juliendoutre/gogtfobins/releases/download/v1.9.0/gogtfobins_Darwin_arm64.tar.gz"
+      sha256 "1d39fb8d0b2fa330307005843a8c65dad5f2b75dd2f5a9324fba4acbbb213901"
 
       def install
         bin.install "gogtfobins"
@@ -27,20 +27,20 @@ class Gogtfobins < Formula
   end
 
   on_linux do
-    on_intel do
+    if Hardware::CPU.intel?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/juliendoutre/gogtfobins/releases/download/v0.1.5/gogtfobins_Linux_x86_64.tar.gz"
-        sha256 "a2363aecb3622fe6e0520aada3771c05befe01ec67953dcd16f0bca2a65dc1e9"
+        url "https://github.com/juliendoutre/gogtfobins/releases/download/v1.9.0/gogtfobins_Linux_x86_64.tar.gz"
+        sha256 "3f84f68085ea1517686b8e1927c754ba710576303e2c1c4f912e30e5f98d9dcd"
 
         def install
           bin.install "gogtfobins"
         end
       end
     end
-    on_arm do
+    if Hardware::CPU.arm?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/juliendoutre/gogtfobins/releases/download/v0.1.5/gogtfobins_Linux_arm64.tar.gz"
-        sha256 "3b41e816321bb61acd7c81e5dd5d19730fc38de886eaea901ee4eeae98fa0aae"
+        url "https://github.com/juliendoutre/gogtfobins/releases/download/v1.9.0/gogtfobins_Linux_arm64.tar.gz"
+        sha256 "bacecd4551a1e60f3ec34eb5286128431f059882fcb331db630588b7b6d67b82"
 
         def install
           bin.install "gogtfobins"
