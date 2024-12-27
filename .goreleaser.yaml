@@ -31,8 +31,8 @@ changelog:
       - "^docs:"
       - "^test:"
 
-# sboms:
-#   - artifacts: archive
+sboms:
+  - artifacts: archive
 
 brews:
 - name: gogtfobins
