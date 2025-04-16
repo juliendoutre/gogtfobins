@@ -8,14 +8,18 @@ import (
 )
 
 // This is set at build time.
-var version = "unknown"
+var (
+	version = "unknown"
+	commit  = "unknown" //nolint:gochecknoglobals
+	date    = "unknown" //nolint:gochecknoglobals
+)
 
 func versionCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print out the CLI version.",
 		Run: func(_ *cobra.Command, _ []string) {
-			fmt.Fprintln(os.Stdout, "gogtfobins version: "+version)
+			fmt.Fprintf(os.Stdout, "gogtfobins v%s, commit %s, built at %s\n", version, commit, date)
 		},
 	}
 
