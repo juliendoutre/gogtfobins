@@ -10,6 +10,7 @@ linters:
           allow:
             - $gostd
             - github.com
+            - gopkg.in/yaml.v3
   exclusions:
     generated: lax
     presets:
