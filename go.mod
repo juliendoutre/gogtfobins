@@ -4,7 +4,7 @@ go 1.23.3
 
 require (
 	github.com/deckarep/golang-set/v2 v2.8.0
-	github.com/jedib0t/go-pretty/v6 v6.6.8
+	github.com/jedib0t/go-pretty/v6 v6.6.9
 	github.com/spf13/cobra v1.10.1
 	gopkg.in/yaml.v3 v3.0.1
 )
